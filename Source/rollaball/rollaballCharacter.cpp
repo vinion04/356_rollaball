@@ -60,7 +60,7 @@ ArollaballCharacter::ArollaballCharacter()
 //////////////////////////////////////////////////////////////////////////
 // Input
 
-void ArollaballCharacter::NotifyControllerChanged()
+/*void ArollaballCharacter::NotifyControllerChanged()
 {
 	Super::NotifyControllerChanged();
 
@@ -93,7 +93,7 @@ void ArollaballCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
-}
+}*/
 
 void ArollaballCharacter::Move(const FInputActionValue& Value)
 {

@@ -50,7 +50,7 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	int32 ItemsCollected;
 
-protected:
+//protected: -- below functions can be public so controller can call them
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -61,9 +61,9 @@ protected:
 
 protected:
 
-	virtual void NotifyControllerChanged() override;
+	//virtual void NotifyControllerChanged() override;
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	UFUNCTION()
     void OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
