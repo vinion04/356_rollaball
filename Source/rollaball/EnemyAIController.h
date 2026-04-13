@@ -20,6 +20,9 @@ class ROLLABALL_API AEnemyAIController : public AAIController
 public:
 	AEnemyAIController();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	TArray<AActor*> PatrolPoints;
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
@@ -30,6 +33,18 @@ protected:
 	/** Sight configuration */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="AI")
 	UAISenseConfig_Sight* SightConfig;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
+	int32 CurrentPatrolIndex;
+	
+	UFUNCTION()
+	void MoveToNextPatrolPoint();
+	
+	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
+	
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI")
+	bool bIsChasingPlayer;
 
 	/** Called when perception updates */
 	UFUNCTION()

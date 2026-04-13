@@ -3,6 +3,7 @@
 
 #include "EnemyAIController.h"
 
+#include "Navigation/PathFollowingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 
@@ -33,6 +34,19 @@ AEnemyAIController::AEnemyAIController()
 	PerceptionComp->OnTargetPerceptionUpdated.AddDynamic(
 		this, &AEnemyAIController::OnTargetPerceptionUpdated
 	);
+	
+	CurrentPatrolIndex = 0;
+	
+	bIsChasingPlayer = false;
+}
+
+void AEnemyAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
+{
+	Super::OnMoveCompleted(RequestID, Result);
+	if (!bIsChasingPlayer && Result.HasFlag(EPathFollowingResult::Success))
+	{
+		MoveToNextPatrolPoint();
+	}
 }
 
 void AEnemyAIController::OnPossess(APawn* InPawn)
@@ -43,6 +57,20 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 	
 	
 	UE_LOG(LogTemp, Warning, TEXT("AI Possessed Pawn: %s"), *InPawn->GetName());
+	
+	MoveToNextPatrolPoint();
+}
+
+void AEnemyAIController::MoveToNextPatrolPoint()
+{
+	if (PatrolPoints.Num() == 0) return;
+	
+	AActor* NextPoint = PatrolPoints[CurrentPatrolIndex];
+	
+	MoveToActor(NextPoint, 5.0f);
+	
+	// Cycle to next point
+	CurrentPatrolIndex = (CurrentPatrolIndex + 1) % PatrolPoints.Num();
 }
 
 void AEnemyAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
@@ -65,10 +93,12 @@ void AEnemyAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus St
 	// If we successfully sensed the player
 	if (Stimulus.WasSuccessfullySensed())
 	{
+		bIsChasingPlayer = true;
 		MoveToActor(Actor, 5.f); // Chase player
 	}
 	else
 	{
+		bIsChasingPlayer = false;
 		StopMovement(); // Lost sight
 	}
 }
