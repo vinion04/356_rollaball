@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "AEnemy.generated.h"
+#include "Weapon.generated.h"
 
 UCLASS()
-class ROLLABALL_API AAEnemy : public ACharacter
+class ROLLABALL_API AWeapon : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AAEnemy();
+	AWeapon();
 
 protected:
 	// Called when the game starts or when spawned
