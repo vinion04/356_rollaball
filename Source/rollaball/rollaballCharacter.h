@@ -50,6 +50,9 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	int32 ItemsCollected;
 
+	UFUNCTION(BlueprintCallable)
+	void AttachWeapon(AWeapon* Weapon);
+
 //protected: -- below functions can be public so controller can call them
 
 	/** Called for movement input */

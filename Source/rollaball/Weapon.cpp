@@ -15,7 +15,7 @@ AWeapon::AWeapon()
 void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	OnActorBeginOverlap.AddDynamic(this, &AWeapon::OnWeaponBeginOverlap);
 }
 
 // Called every frame
@@ -25,10 +25,26 @@ void AWeapon::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void AWeapon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AWeapon::OnWeaponBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	UE_LOG(LogTemp, Log, TEXT("Weapon overlapped"));
+	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Orange, TEXT("Weapon overlapped"));
+	//UE_LOG(LogTemp, Log, TEXT("Weapon overlapped"));
 
+	auto character = Cast<ArollaballCharacter>(OtherActor);
+
+	if (character != nullptr)
+	{
+		if (Holder == nullptr)
+		{
+			auto playerAvatar = Cast<ArollaballCharacter>(character);
+
+			if (playerAvatar != nullptr)
+			{
+				Holder = character;
+				playerAvatar->AttachWeapon(this);
+			}
+		}
+	}
 }
 
